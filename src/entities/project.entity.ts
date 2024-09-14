@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Subject } from './subject.entity';
 
 @Entity()
 export class Project {
@@ -9,9 +10,6 @@ export class Project {
   name: string;
 
   @Column()
-  subject_id: string;
-
-  @Column()
   image_url: string;
 
   @Column()
@@ -19,4 +17,7 @@ export class Project {
 
   @Column('text', { array: true, nullable: true })
   members: string[];
+
+  @ManyToOne(() => Subject, (subject) => subject.projects, { eager: true })
+  subject: Subject;
 }

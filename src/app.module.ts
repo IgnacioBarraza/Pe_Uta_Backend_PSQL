@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './modules/user.module';
 import { ProjectsModule } from './modules/project.module';
+import { SubjectModule } from './modules/subject.module';
 
 @Module({
   imports: [
@@ -13,12 +14,13 @@ import { ProjectsModule } from './modules/project.module';
       port: 5432,
       username: 'postgres',
       password: 'postgres',
-      database: 'peuta',
+      database: 'peuta_nest',
       autoLoadEntities: true,
       synchronize: true,
     }),
     UsersModule,
     ProjectsModule,
+    SubjectModule,
   ],
   controllers: [AppController],
   providers: [AppService],
