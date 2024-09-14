@@ -7,6 +7,7 @@ import { ProjectsModule } from './modules/project.module';
 import { SubjectModule } from './modules/subject.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EvaluationModule } from './modules/evaluation.module';
+import { QuestionsModule } from './modules/questions.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { EvaluationModule } from './modules/evaluation.module';
     ProjectsModule,
     SubjectModule,
     EvaluationModule,
+    QuestionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
