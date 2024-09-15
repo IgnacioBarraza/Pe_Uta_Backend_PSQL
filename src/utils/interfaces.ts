@@ -59,3 +59,13 @@ export interface UpdateProjectDto {
   members?: string[];
   subject?: string;
 }
+
+export interface CreateSubjectDto {
+  subject_name: string;
+  showInExpo: boolean;
+}
+
+export interface UpdateSubjectDto {
+  subject_name?: string;
+  showInExpo?: boolean;
+}

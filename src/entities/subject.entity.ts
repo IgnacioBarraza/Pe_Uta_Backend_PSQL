@@ -9,6 +9,9 @@ export class Subject {
   @Column()
   subject_name: string;
 
+  @Column()
+  showInExpo: boolean;
+
   @OneToMany(() => Project, (project) => project.subject)
   projects: Project[];
 }
