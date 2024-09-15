@@ -4,6 +4,7 @@ import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 import { RegisterUserDto, LoginUserDto } from '../interfaces/user.interface';
 import { ConfigService } from '@nestjs/config';
+import { validateRut } from '../utils/rutValidator';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 
@@ -23,12 +24,16 @@ export class UserService {
   async register(registerUserDto: RegisterUserDto): Promise<User> {
     const { name, rut, password } = registerUserDto;
 
+    if (!validateRut(rut)) throw new Error('Rut invalido');
+
     const hashedPassword = await bcrypt.hash(password, this.saltRounds);
 
     const user = this.userRepository.create({
       name,
       password: hashedPassword,
       rut,
+      user_type: 'admin',
+      evaluations: [],
     });
 
     return this.userRepository.save(user);
@@ -37,14 +42,21 @@ export class UserService {
   async login(loginUserDto: LoginUserDto): Promise<{ accessToken: string }> {
     const { rut, password } = loginUserDto;
 
+    if (!validateRut(rut)) throw new Error('Rut invalido');
+
     const user = await this.userRepository.findOneBy({ rut });
-    if (user!) throw new Error('Usuario no encontrado');
+    if (!user) throw new Error('Usuario no encontrado');
 
     const match = await bcrypt.compare(password, user.password);
-    if (match!) throw new Error('Contraseña incorrecta');
+    if (!match) throw new Error('Contraseña incorrecta');
 
     const accessToken = jwt.sign(
-      { id: user.id, name: user.name },
+      {
+        id: user.id,
+        name: user.name,
+        type: user.user_type,
+        evaluated: user.evaluations,
+      },
       this.jwtSecret,
       { expiresIn: this.jwtExpiration },
     );
