@@ -21,7 +21,9 @@ export class UserService {
     private configService: ConfigService,
   ) {}
 
-  async register(registerUserDto: RegisterUserDto): Promise<User> {
+  async register(
+    registerUserDto: RegisterUserDto,
+  ): Promise<{ accessToken: string }> {
     const { name, rut, password } = registerUserDto;
 
     if (!validateRut(rut)) throw new Error('Rut invalido');
@@ -32,11 +34,24 @@ export class UserService {
       name,
       password: hashedPassword,
       rut,
-      user_type: 'admin',
+      user_type: 'user',
       evaluations: [],
     });
 
-    return this.userRepository.save(user);
+    const savedUser = await this.userRepository.save(user);
+
+    const accessToken = jwt.sign(
+      {
+        id: savedUser.id,
+        name: savedUser.name,
+        user_type: savedUser.user_type,
+        evaluated: savedUser.evaluations,
+      },
+      this.jwtSecret,
+      { expiresIn: this.jwtExpiration },
+    );
+
+    return { accessToken };
   }
 
   async login(loginUserDto: LoginUserDto): Promise<{ accessToken: string }> {
