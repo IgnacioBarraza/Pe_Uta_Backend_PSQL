@@ -54,7 +54,7 @@ export class UserService {
       {
         id: user.id,
         name: user.name,
-        type: user.user_type,
+        user_type: user.user_type,
         evaluated: user.evaluations,
       },
       this.jwtSecret,
