@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
-import { RegisterUserDto, LoginUserDto } from '../interfaces/user.interface';
+import { RegisterUserDto, LoginUserDto } from '../utils/interfaces';
 import { ConfigService } from '@nestjs/config';
 import { validateRut } from '../utils/rutValidator';
 import * as bcrypt from 'bcrypt';
