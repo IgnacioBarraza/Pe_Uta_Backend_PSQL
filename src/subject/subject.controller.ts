@@ -11,7 +11,7 @@ import { SubjectService } from './subject.service';
 import { Subject } from 'src/entities/subject.entity';
 import { CreateSubjectDto, UpdateSubjectDto } from 'src/utils/interfaces';
 
-@Controller('subject')
+@Controller('subjects')
 export class SubjectController {
   constructor(private readonly subjectService: SubjectService) {}
 
