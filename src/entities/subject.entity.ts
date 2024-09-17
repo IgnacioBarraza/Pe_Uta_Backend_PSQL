@@ -10,7 +10,7 @@ export class Subject {
   subject_name: string;
 
   @Column()
-  showInExpo: boolean;
+  showOnExpo: boolean;
 
   @OneToMany(() => Project, (project) => project.subject)
   projects: Project[];

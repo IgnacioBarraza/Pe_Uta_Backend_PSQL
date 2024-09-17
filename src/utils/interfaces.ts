@@ -62,10 +62,10 @@ export interface UpdateProjectDto {
 
 export interface CreateSubjectDto {
   subject_name: string;
-  showInExpo: boolean;
+  showOnExpo: boolean;
 }
 
 export interface UpdateSubjectDto {
   subject_name?: string;
-  showInExpo?: boolean;
+  showOnExpo?: boolean;
 }

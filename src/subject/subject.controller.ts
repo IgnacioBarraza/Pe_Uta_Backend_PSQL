@@ -32,7 +32,7 @@ export class SubjectController {
     @Param('id') id: string,
     @Body() updateSubjectDto: UpdateSubjectDto,
   ): Promise<Subject> {
-    return this.updateSubject(id, updateSubjectDto);
+    return this.subjectService.updateSubject(id, updateSubjectDto);
   }
 
   @Delete(':id')
