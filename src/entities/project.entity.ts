@@ -14,7 +14,7 @@ export class Project {
   id: string;
 
   @Column()
-  name: string;
+  project_name: string;
 
   @Column()
   image_url: string;
