@@ -20,8 +20,8 @@ export class ProjectController {
     return this.projectService.findAllProjects();
   }
 
-  @Get()
-  async findProject(id: string): Promise<Project> {
+  @Get(':id')
+  async findProject(@Param('id') id: string): Promise<Project> {
     return this.projectService.findProject(id);
   }
 

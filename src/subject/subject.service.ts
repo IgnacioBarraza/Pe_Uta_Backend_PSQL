@@ -15,6 +15,10 @@ export class SubjectService {
     return this.subjectRepository.find();
   }
 
+  async findSubject(id: string): Promise<Subject> {
+    return this.subjectRepository.findOneBy({ id });
+  }
+
   async createSubject(createSubjectDto: CreateSubjectDto): Promise<Subject> {
     const { subject_name, showOnExpo = true } = createSubjectDto;
     const subject = this.subjectRepository.create({ subject_name, showOnExpo });

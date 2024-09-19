@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Subject } from 'src/entities/subject.entity';
 import { Project } from 'src/entities/project.entity';
+import { SubjectService } from 'src/subject/subject.service';
 import { CreateProjectDto, UpdateProjectDto } from 'src/utils/interfaces';
 import { Repository } from 'typeorm';
 
@@ -10,8 +10,7 @@ export class ProjectService {
   constructor(
     @InjectRepository(Project)
     private projectRepository: Repository<Project>,
-    @InjectRepository(Subject)
-    private subjectRepository: Repository<Subject>,
+    private subjectService: SubjectService,
   ) {}
 
   async findAllProjects(): Promise<Project[]> {
@@ -26,10 +25,7 @@ export class ProjectService {
     const { project_name, description, image_url, members, subject } =
       createProjectDto;
 
-    // Fetch the subject by ID before associating it
-    const subjectEntity = await this.subjectRepository.findOneBy({
-      id: subject,
-    });
+    const subjectEntity = await this.subjectService.findSubject(subject);
 
     if (!subjectEntity) {
       throw new Error('Subject not found');
