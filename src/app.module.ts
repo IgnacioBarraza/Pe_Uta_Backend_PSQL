@@ -21,7 +21,7 @@ import { QuestionsModule } from './modules/questions.module';
         type: 'postgres',
         host: configService.get('HOST'),
         port: +configService.get<number>('PORT'),
-        username: configService.get('USER'),
+        username: configService.get('USERDB'),
         password: configService.get('PASSWORD'),
         database: configService.get('DATABASE'),
         autoLoadEntities: true,

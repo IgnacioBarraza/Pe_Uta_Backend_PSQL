@@ -20,8 +20,18 @@ export class SubjectService {
   }
 
   async createSubject(createSubjectDto: CreateSubjectDto): Promise<Subject> {
-    const { subject_name, showOnExpo = true } = createSubjectDto;
-    const subject = this.subjectRepository.create({ subject_name, showOnExpo });
+    const {
+      subject_name,
+      showOnExpo = true,
+      description,
+      subject_field,
+    } = createSubjectDto;
+    const subject = this.subjectRepository.create({
+      subject_name,
+      showOnExpo,
+      description,
+      subject_field,
+    });
 
     return await this.subjectRepository.save(subject);
   }

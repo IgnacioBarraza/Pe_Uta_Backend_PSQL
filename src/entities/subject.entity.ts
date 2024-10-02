@@ -12,6 +12,12 @@ export class Subject {
   @Column()
   showOnExpo: boolean;
 
+  @Column()
+  description: string;
+
+  @Column()
+  subject_field: string;
+
   @OneToMany(() => Project, (project) => project.subject)
   projects: Project[];
 }

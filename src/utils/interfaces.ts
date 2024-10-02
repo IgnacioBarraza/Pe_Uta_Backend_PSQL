@@ -63,9 +63,13 @@ export interface UpdateProjectDto {
 export interface CreateSubjectDto {
   subject_name: string;
   showOnExpo: boolean;
+  description: string;
+  subject_field: string;
 }
 
 export interface UpdateSubjectDto {
   subject_name?: string;
   showOnExpo?: boolean;
+  description?: string;
+  subject_field?: string;
 }
