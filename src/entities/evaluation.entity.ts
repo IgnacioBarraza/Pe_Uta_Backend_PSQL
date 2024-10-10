@@ -23,5 +23,8 @@ export class Evaluation {
   total_evaluation_score: number;
 
   @Column('jsonb')
-  question_scores: { questionId: string; score: number }[];
+  question_scores: { id: string; score: number }[];
+
+  @Column('text', { nullable: true }) // New comment attribute
+  comment: string;
 }

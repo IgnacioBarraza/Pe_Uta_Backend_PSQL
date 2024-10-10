@@ -26,10 +26,10 @@ export interface UpdateQuestionDto {
 }
 
 export interface CreateEvaluationDto {
-  userId: string;
-  projectId: string;
-  total_evaluation_score: number;
-  question_score: QuestionScore[];
+  userId: string; // Assuming you just need the user ID
+  projectId: string; // Assuming you just need the project ID
+  total_evaluation_score: number; // Add this if needed
+  question_scores: { questionId: string; score: number }[]; // Assuming this is how you structure it
 }
 
 export interface UpdateEvaluationDto {
