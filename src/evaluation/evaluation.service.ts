@@ -34,31 +34,35 @@ export class EvaluationService {
   async createEvaluation(
     createEvaluation: CreateEvaluationDto,
   ): Promise<Evaluation> {
-    const { userId, projectId } = createEvaluation;
+    const { user, project } = createEvaluation;
 
     // Check if the user exists
     const existingUser = await this.userRepository.findOne({
-      where: { id: userId },
+      where: { id: user.id },
     });
     if (!existingUser) {
-      throw new NotFoundException(`User with ID ${userId} not found`);
+      throw new NotFoundException(`User with ID ${user.id} not found`);
     }
 
     // Check if the project exists
     const existingProject = await this.projectRepository.findOne({
-      where: { id: projectId },
+      where: { id: project.id },
     });
     if (!existingProject) {
-      throw new NotFoundException(`Project with ID ${projectId} not found`);
+      throw new NotFoundException(`Project with ID ${project.id} not found`);
     }
 
-    // Check if the user has already evaluated the project
+    // Check if the user has already evaluated THIS project
     const existingEvaluation = await this.evaluationRepository.findOne({
-      where: { user: existingUser, project: existingProject },
+      where: {
+        user: { id: user.id },
+        project: { id: project.id },
+      },
+      relations: ['user', 'project'],
     });
     if (existingEvaluation) {
       throw new ConflictException(
-        `El usuario ya evaluo este proyecto, evaluación no completada.`,
+        `El usuario ya evaluó este proyecto, evaluación no completada.`,
       );
     }
 

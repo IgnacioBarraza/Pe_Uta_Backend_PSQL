@@ -7,6 +7,7 @@ import { ConfigService } from '@nestjs/config';
 import { validateRut } from '../utils/rutValidator';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
+import { EvaluationService } from 'src/evaluation/evaluation.service';
 
 @Injectable()
 export class UserService {
@@ -19,6 +20,7 @@ export class UserService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     private configService: ConfigService,
+    private evaluationService: EvaluationService,
   ) {}
 
   async register(
@@ -54,7 +56,9 @@ export class UserService {
     return { accessToken };
   }
 
-  async login(loginUserDto: LoginUserDto): Promise<{ accessToken: string }> {
+  async login(
+    loginUserDto: LoginUserDto,
+  ): Promise<{ accessToken: string; evaluations }> {
     const { rut, password } = loginUserDto;
 
     if (!validateRut(rut)) throw new Error('Rut invalido');
@@ -65,17 +69,20 @@ export class UserService {
     const match = await bcrypt.compare(password, user.password);
     if (!match) throw new Error('Contraseña incorrecta');
 
+    const userEvaluations = await this.evaluationService.findByUser(user.id);
+    if (!userEvaluations)
+      throw new Error('Error al encontrar las evaluaciones');
+
     const accessToken = jwt.sign(
       {
         id: user.id,
         name: user.name,
         user_type: user.user_type,
-        evaluated: user.evaluations,
       },
       this.jwtSecret,
       { expiresIn: this.jwtExpiration },
     );
 
-    return { accessToken };
+    return { accessToken, evaluations: userEvaluations };
   }
 }
