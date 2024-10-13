@@ -20,7 +20,7 @@ import { QuestionsModule } from './modules/questions.module';
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
         host: configService.get('HOST'),
-        port: +configService.get<number>('PORT'),
+        port: +configService.get<number>('DB_PORT'),
         username: configService.get('USERDB'),
         password: configService.get('PASSWORD'),
         database: configService.get('DATABASE'),
