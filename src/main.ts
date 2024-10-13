@@ -11,6 +11,8 @@ async function bootstrap() {
     allowedHeaders: 'Content-Type,Authorization', // Allowed headers
   });
 
-  await app.listen(3000);
+  const port = process.env.PORT || 3000;
+  await app.listen(port, '0.0.0.0'); // '0.0.0.0' ensures the app listens on all network interfaces
+  console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();
