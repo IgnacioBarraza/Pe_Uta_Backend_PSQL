@@ -3,7 +3,7 @@ import { Questions } from 'src/entities/questions.entity';
 import { CreateQuestionDto } from 'src/utils/interfaces';
 import { QuestionsService } from './questions.service';
 
-@Controller('questions')
+@Controller('api/questions')
 export class QuestionsController {
   constructor(private readonly questionsService: QuestionsService) {}
 

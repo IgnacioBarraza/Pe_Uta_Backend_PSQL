@@ -3,7 +3,7 @@ import { EvaluationService } from './evaluation.service';
 import { Evaluation } from 'src/entities/evaluation.entity';
 import { CreateEvaluationDto } from 'src/utils/interfaces';
 
-@Controller('evaluation')
+@Controller('api/evaluations')
 export class EvaluationController {
   constructor(private readonly evaluationService: EvaluationService) {}
 
