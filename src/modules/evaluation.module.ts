@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Evaluation } from 'src/entities/evaluation.entity';
-import { EvaluationService } from '../evaluation/evaluation.service';
-import { EvaluationController } from '../evaluation/evaluation.controller';
+import { EvaluationService } from '../services/evaluation.service';
+import { EvaluationController } from '../controllers/evaluation.controller';
 import { User } from 'src/entities/user.entity';
 import { Project } from 'src/entities/project.entity';
 
