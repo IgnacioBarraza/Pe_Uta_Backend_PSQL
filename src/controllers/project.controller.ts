@@ -7,7 +7,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { ProjectService } from './project.service';
+import { ProjectService } from '../services/project.service';
 import { Project } from 'src/entities/project.entity';
 import { CreateProjectDto, UpdateProjectDto } from 'src/utils/interfaces';
 

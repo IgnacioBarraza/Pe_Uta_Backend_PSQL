@@ -7,7 +7,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { SubjectService } from './subject.service';
+import { SubjectService } from '../services/subject.service';
 import { Subject } from 'src/entities/subject.entity';
 import { CreateSubjectDto, UpdateSubjectDto } from 'src/utils/interfaces';
 

@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { EvaluationService } from './evaluation.service';
+import { EvaluationService } from '../services/evaluation.service';
 import { Evaluation } from 'src/entities/evaluation.entity';
 import { CreateEvaluationDto } from 'src/utils/interfaces';
 
