@@ -56,12 +56,8 @@ The **Pe_Uta_Backend_PSQL** project is the backend for the **[Pe Uta](https://gi
    ```
 > [!NOTE]
 > You also can copy and rename the `.env.example` file to `.env`
-1. Run database migrations:
-   ```bash
-   npm run migration:run
-   ```
 
-2. Start the development server:
+4. Start the development server:
    ```bash
    npm run start:dev
    ```
@@ -149,7 +145,7 @@ Pe_Uta_Backend_PSQL/
 We welcome contributions! Follow these steps:
 
 1. Fork the repository.
-2. Create a feature branch: `git checkout -b feature-name`.
+2. Create a feature branch: `git switch -c feature-name`.
 3. Commit your changes: `git commit -m "Add new feature"`.
 4. Push to your branch: `git push origin feature-name`.
 5. Open a pull request.
