@@ -1,6 +1,8 @@
 # Pe_Uta_Backend_PSQL
 
-![Pe_Uta_Backend_PSQL](https://via.placeholder.com/1200x400?text=Pe_Uta+Backend+PSQL)
+<p align="center">
+  <img src="public/careers-with-coding.jpg" alt="Pe_Uta_Backend_PSQL"/>
+</p>
 
 The **Pe_Uta_Backend_PSQL** project is the backend for the **[Pe Uta](https://github.com/IgnacioBarraza/Pe_uta)** frontend. Built with **NestJS** and **TypeScript**, this backend provides a robust API for managing subjects, projects, questions, evaluations, and user authentication.
 
