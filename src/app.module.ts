@@ -8,6 +8,7 @@ import { SubjectModule } from './modules/subject.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EvaluationModule } from './modules/evaluation.module';
 import { QuestionsModule } from './modules/questions.module';
+import { ExportController } from './controllers/export.controller';
 
 @Module({
   imports: [
@@ -34,7 +35,7 @@ import { QuestionsModule } from './modules/questions.module';
     EvaluationModule,
     QuestionsModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, ExportController],
   providers: [AppService],
 })
 export class AppModule {}

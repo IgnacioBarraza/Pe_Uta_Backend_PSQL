@@ -9,49 +9,96 @@ export class ExportController {
 
   @Get('xls')
   async exportXLS(@Res() res: Response) {
-    const evaluations = await this.evaluationService.findAll();
+    try {
+      const evaluations = await this.evaluationService.findAll();
 
-    const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet('Resumen Evaluaciones Feria 2024');
+      // Agrupar evaluaciones por nombre de grupo
+      const groupedEvaluations = evaluations.reduce(
+        (acc, evaluation) => {
+          const groupName = evaluation.project.project_name;
+          if (!acc[groupName]) {
+            acc[groupName] = [];
+          }
+          acc[groupName].push(evaluation);
+          return acc;
+        },
+        {} as Record<string, any[]>,
+      );
 
-    worksheet.addRow([
-      'Nombre Grupo',
-      'Asignatura',
-      'Promedio Pregunta 1',
-      'Promedio Pregunta 2',
-      'Promedio Pregunta 3',
-      'Promedio Pregunta 4',
-      'Promedio Pregunta 5',
-      'Nota Promedio',
-    ]);
+      const workbook = new ExcelJS.Workbook();
+      const worksheet = workbook.addWorksheet(
+        'Resumen Evaluaciones Feria 2024',
+      );
 
-    evaluations.forEach((evaluation) => {
-      const { project, question_scores, total_evaluation_score } = evaluation;
+      // Determinar la cantidad máxima de preguntas
+      const maxQuestions = Math.max(
+        ...evaluations.map((evaluation) => evaluation.question_scores.length),
+      );
 
-      worksheet.addRow([
-        project.project_name,
-        project.subject.subject_name,
-        question_scores[0]?.score ?? 1,
-        question_scores[1]?.score ?? 1,
-        question_scores[2]?.score ?? 1,
-        question_scores[3]?.score ?? 1,
-        question_scores[4]?.score ?? 1,
-        question_scores[5]?.score ?? 1,
-        total_evaluation_score.toFixed(2),
-      ]);
-    });
+      // Encabezados
+      const headers = [
+        'Nombre Grupo',
+        'Asignatura',
+        ...Array.from(
+          { length: maxQuestions },
+          (_, i) => `Promedio Pregunta ${i + 1}`,
+        ),
+        'Nota Promedio',
+      ];
+      const headerRow = worksheet.addRow(headers);
+      headerRow.font = { bold: true };
 
-    res.setHeader(
-      'Content-Type',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    );
+      // Calcular promedios por grupo
+      for (const [groupName, groupEvaluations] of Object.entries(
+        groupedEvaluations,
+      )) {
+        // Obtener asignatura (asumiendo que todas las evaluaciones tienen la misma asignatura)
+        const subjectName = groupEvaluations[0].project.subject.subject_name;
 
-    res.setHeader(
-      'Content-Disposition',
-      'attachment; filename=ResumenEvaluaciones2024.xlsx',
-    );
+        // Inicializar acumuladores para las preguntas y notas totales
+        const questionSums = Array(maxQuestions).fill(0);
+        let totalScoreSum = 0;
 
-    await workbook.xlsx.write(res);
-    res.end();
+        // Procesar evaluaciones del grupo
+        groupEvaluations.forEach((evaluation) => {
+          evaluation.question_scores.forEach((question, index) => {
+            questionSums[index] += question.score;
+          });
+          totalScoreSum += evaluation.total_evaluation_score;
+        });
+
+        // Calcular promedios
+        const questionAverages = questionSums.map(
+          (sum) => (sum / groupEvaluations.length).toFixed(2) || '1.00',
+        );
+        const averageTotalScore = (
+          totalScoreSum / groupEvaluations.length
+        ).toFixed(2);
+
+        // Agregar fila con los promedios
+        worksheet.addRow([
+          groupName,
+          subjectName,
+          ...questionAverages,
+          averageTotalScore,
+        ]);
+      }
+
+      // Configuración de respuesta HTTP
+      res.setHeader(
+        'Content-Type',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      );
+      res.setHeader(
+        'Content-Disposition',
+        'attachment; filename=ResumenEvaluaciones2024.xlsx',
+      );
+
+      await workbook.xlsx.write(res);
+      res.end();
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Error al generar el archivo Excel.');
+    }
   }
 }
