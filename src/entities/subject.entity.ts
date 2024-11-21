@@ -1,5 +1,12 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Project } from './project.entity';
+import { Questions } from './questions.entity';
 
 @Entity()
 export class Subject {
@@ -20,4 +27,7 @@ export class Subject {
 
   @OneToMany(() => Project, (project) => project.subject)
   projects: Project[];
+
+  @ManyToMany(() => Questions, (question) => question.associatedTo)
+  questions: Questions[];
 }

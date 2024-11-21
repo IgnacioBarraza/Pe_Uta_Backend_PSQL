@@ -1,14 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Questions } from '../entities/questions.entity';
 import { CreateQuestionDto } from '../utils/interfaces';
 import { Repository } from 'typeorm';
+import { SubjectService } from './subject.service';
 
 @Injectable()
 export class QuestionsService {
   constructor(
     @InjectRepository(Questions)
     private readonly questionRepository: Repository<Questions>,
+    private subjectService: SubjectService,
   ) {}
 
   async findAll(): Promise<Questions[]> {
@@ -18,7 +20,21 @@ export class QuestionsService {
   async createQuestion(
     createQuestionDto: CreateQuestionDto,
   ): Promise<Questions> {
-    const question = this.questionRepository.create(createQuestionDto);
+    const { associatedTo, ...rest } = createQuestionDto;
+    const subjects = [];
+
+    for (const subjectId of associatedTo) {
+      const subject = await this.subjectService.findSubject(subjectId);
+      if (!subject)
+        throw new NotFoundException(`Subject with ID ${subjectId} not found`);
+
+      subjects.push(subject);
+    }
+
+    const question = this.questionRepository.create({
+      ...rest,
+      associatedTo: subjects,
+    });
     return this.questionRepository.save(question);
   }
 

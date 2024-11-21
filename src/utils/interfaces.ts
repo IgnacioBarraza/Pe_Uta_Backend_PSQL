@@ -18,6 +18,8 @@ export interface QuestionOption {
 export interface CreateQuestionDto {
   label: string;
   options: QuestionOption[];
+  ponderation: number;
+  associatedTo: string[];
 }
 
 export interface UpdateQuestionDto {
