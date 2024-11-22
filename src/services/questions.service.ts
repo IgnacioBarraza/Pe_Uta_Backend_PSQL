@@ -14,7 +14,9 @@ export class QuestionsService {
   ) {}
 
   async findAll(): Promise<Questions[]> {
-    return this.questionRepository.find();
+    return this.questionRepository.find({
+      relations: ['associatedTo'],
+    });
   }
 
   async createQuestion(
