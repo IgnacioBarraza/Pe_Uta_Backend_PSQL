@@ -11,7 +11,7 @@ export interface LoginUserDto {
 }
 
 export interface QuestionOption {
-  value: string;
+  value: number;
   label: string;
 }
 

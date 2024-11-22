@@ -20,7 +20,7 @@ export class QuestionsService {
   async createQuestion(
     createQuestionDto: CreateQuestionDto,
   ): Promise<Questions> {
-    const { associatedTo, ...rest } = createQuestionDto;
+    const { associatedTo, options, ...rest } = createQuestionDto;
     const subjects = [];
 
     for (const subjectId of associatedTo) {
@@ -31,8 +31,14 @@ export class QuestionsService {
       subjects.push(subject);
     }
 
+    const processedOptions = options.map((option) => ({
+      ...option,
+      value: Number(option.value),
+    }));
+
     const question = this.questionRepository.create({
       ...rest,
+      options: processedOptions,
       associatedTo: subjects,
     });
     return this.questionRepository.save(question);

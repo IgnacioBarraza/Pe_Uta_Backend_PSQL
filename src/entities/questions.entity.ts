@@ -16,9 +16,9 @@ export class Questions {
   label: string;
 
   @Column('jsonb')
-  options: { value: string; label: string }[];
+  options: { value: number; label: string }[];
 
-  @Column()
+  @Column('decimal', { precision: 5, scale: 2 })
   ponderation: number;
 
   @ManyToMany(() => Subject, (subject) => subject.questions)

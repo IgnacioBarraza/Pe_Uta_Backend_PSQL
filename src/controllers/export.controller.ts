@@ -25,9 +25,12 @@ export class ExportController {
         {} as Record<string, any[]>,
       );
 
+      const date = new Date();
+      const currentYear = date.getFullYear();
+
       const workbook = new ExcelJS.Workbook();
       const worksheet = workbook.addWorksheet(
-        'Resumen Evaluaciones Feria 2024',
+        `Resumen Evaluaciones Feria ${currentYear}`,
       );
 
       // Determinar la cantidad máxima de preguntas
